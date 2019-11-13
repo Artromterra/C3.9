@@ -16,10 +16,25 @@
 		));
 		return matches ? decodeURIComponent(matches[1]) : undefined;
 	}
+	function setCookie(name, value) {		
+		if (options.expires.toUTCString) {
+    		options.expires = options.expires.toUTCString();
+  		}
+  		let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  		for (let optionKey in options) {
+    			updatedCookie += "; " + optionKey;
+    			let optionValue = options[optionKey];
+    			if (optionValue !== true) {
+      			updatedCookie += "=" + optionValue;
+    			}
+  		}
 
+  	document.cookie = updatedCookie;
+	}
+				
 	function deleteCookie(name) {
   		setCookie(name, "", {
-    	'max-age': -1
+    		'max-age': -1
   		})
 	}
  
@@ -27,7 +42,7 @@
 	let btn = document.querySelector("#reset");
 
 	textArea.oninput = () => {
-		document.cookie = encodeURIComponent("city") + "=" + encodeURIComponent(textArea.value);
+		setCookie("city",textArea) 
 	}
 
 	if (document.cookie.split()[0].includes("city")){
