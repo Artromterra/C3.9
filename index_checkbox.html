@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>checkbox</title>
+</head>
+<body>
+	<h2>Поставте галочки!</h2>
+	<input type="checkbox" onclick="check('btn_1')" id="btn_1">Не беспокоить!<br>
+	<input type="checkbox" onclick="check('btn_2')" id="btn_2">Согласен с правилами.<br>
+	<input type="checkbox" onclick="check('btn_3')" id="btn_3">Здесь я галочку не ставлю!<br>
+	<input type="checkbox" onclick="check('btn_4')" id="btn_4">А здесь я галочку поставлю!<br>
+	<input type="checkbox" onclick="check('btn_5')" id="btn_5">Мне больше 18 лет.<br>
+	<input type="checkbox" onclick="check('btn_6')" id="btn_6">Задание выполнено.<br>
+	<br>
+	<hr>
+	<button id="btn" onclick="save()">Сохранить</button>
+	<button onclick="remove()">DELETE</button>
+
+	<script type="text/javascript">
+		//Создаем массив и при установке галочки записываем значения 'item = btn_1,2 ... и т.д'
+		let arr = []; 
+		function check (item) {
+			arr.push(item);
+		};
+		// при нажатии кнопки сохранить записываем значения из массива в localstorage
+		function save() {
+			for (let i=0; i < arr.length; i++) {
+				let checkbox = document.getElementById(arr[i]);
+				localStorage.setItem(arr[i], checkbox.checked);
+			};
+			localStorage.setItem('btn', 'true')
+			document.getElementById('btn').disabled = 'true';
+		};
+		// итерируем localStorage и присваиваем атрибут checked кнопкам и disable для кнопки "сохранить"
+		function load() {
+			for (let n=0; n < localStorage.length; n++) {
+				let key = localStorage.key(n);
+				let checked = JSON.parse(localStorage.getItem(key));
+				document.getElementById(key).checked = checked;
+			};
+			let disable = JSON.parse(localStorage.getItem('btn'));
+			document.getElementById('btn').disabled = disable;
+		};
+		// дополнительная функция(не по заданию) сбрасываем страницу и очищаем localStorage
+		function remove() {
+			localStorage.clear();
+			location.reload();
+		};
+
+		load();
+	</script>
+	
+</body>
+</html>
